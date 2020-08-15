@@ -17,7 +17,7 @@ const { value: envVars, error } = envVarsSchema.prefs({ errors: { label: 'key' }
 if (error) {
   throw new Error(`Config validation error: ${error.message}`);
 }
-console.log(envVars.MONGODB_URL + (envVars.NODE_ENV === 'test' ? '-test' : ''));
+
 module.exports = {
   env: envVars.NODE_ENV,
   port: envVars.PORT,

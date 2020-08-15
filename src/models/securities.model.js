@@ -25,7 +25,7 @@ const securities = mongoose.Schema(
 securities.plugin(toJSON);
 securities.plugin(paginate);
 
-securities.statics.isTickerPresent = async function (ticker) {
+securities.statics.isTickerTaken = async function (ticker) {
   const entry = await this.findOne({ ticker });
   return !!entry;
 };
