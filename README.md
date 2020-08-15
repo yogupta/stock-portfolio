@@ -1,4 +1,4 @@
-### The app contains boiler plate code from https://github.com/hagopj13/node-express-mongoose-boilerplate
+The app contains boiler plate code from https://github.com/hagopj13/node-express-mongoose-boilerplate
 ## Getting Started
 
 ### Installation
