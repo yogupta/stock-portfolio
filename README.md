@@ -1,4 +1,5 @@
 The app contains boiler plate code from https://github.com/hagopj13/node-express-mongoose-boilerplate
+
 ## Getting Started
 
 ### Installation
@@ -96,3 +97,22 @@ src\
  |--app.js          # Express app
  |--index.js        # App entry point
 ```
+
+##### A swagger doc is live at `/v1/docs`
+
+While calculating returns value in security table(document) is used.
+The default value is `100`.
+
+### Design decision
+
+- Two mongo documents are created. `Securities` and `Trades`.
+  - Trades is simple denormalised table which stores all the trades done by a user.
+- Portfolio is calculated on the fly whenever user queries their portfolio.
+  - checkout [this](https://stackoverflow.com/questions/4373968/database-design-calculating-the-account-balance) and [this](https://stackoverflow.com/a/41400500) stackoverflow links.
+  - This makes code simplier to write and easy to debug and prevents error which may arise because of multi-threading(if many transactions are performed).
+  - Because we're allowing trades to be mutable i.e they can be updated in history, this also makes difficult to store portfolio of a user in database.
+- similarly returns is also calculated on the fly.
+- [Joi](https://www.npmjs.com/package/joi) is used for data validation.
+- A in-memory moongoDB instance is spin on local when running tests.
+- For prod the database is hosted on mLab.
+- EsLint and prettier is used for linting.

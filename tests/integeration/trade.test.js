@@ -316,7 +316,7 @@ describe('Securities Trades', () => {
       expect(ticker1.quantity).toEqual(3);
       expect(ticker1.averageBuyPrice).toEqual(avgBuyPriceOfSecurity1);
       expect(ticker2.quantity).toEqual(buyTrade3.quantity);
-      expect(ticker2.averageBuyPrice).toEqual(buyTrade3.price);
+      expect(Math.floor(ticker2.averageBuyPrice)).toEqual(Math.floor(buyTrade3.price));
     });
   });
 

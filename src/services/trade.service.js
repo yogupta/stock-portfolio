@@ -86,12 +86,13 @@ const getPortFolio = async (email) => {
       const securitiesPromise = Securities.find({ _id: { $in: allTickers } }).exec();
 
       const result = securitiesPromise.then((securities) => {
-        const tickerById = {};
+        const tickerById = {}; // map to hold ticker id and its corresponding symbol
         securities.forEach((security) => {
           tickerById[security._id] = security.ticker;
         });
 
         return trades.map((entry) => {
+          // make a single row of a portfolio
           const tickerId = entry._id;
           const ticker = tickerById[tickerId];
           const buyTrades = entry.trades.filter((trade) => trade.type === TradeType.buy);
@@ -99,9 +100,11 @@ const getPortFolio = async (email) => {
 
           const buyQuantity = buyTrades.map((trade) => trade.quantity).reduce((sum, current) => sum + current, 0);
           const sellQuantity = sellTrades.map((trade) => trade.quantity).reduce((sum, current) => sum + current, 0);
+
           const totalBuyPrice = buyTrades
             .map((trade) => trade.quantity * trade.price)
             .reduce((sum, current) => sum + current, 0);
+
           const trade = {
             ticker,
             quantity: buyQuantity - sellQuantity,
@@ -122,6 +125,7 @@ const getReturns = async (email) => {
   const tradesPromise = getPortFolio(email);
 
   const returns = tradesPromise.then(async (trades) => {
+    // get all ticker ids done in trade by this user
     const securities = await Trades.aggregate([
       { $match: { email } },
       {
