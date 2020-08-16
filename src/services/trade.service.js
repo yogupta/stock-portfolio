@@ -41,7 +41,7 @@ const getTradeById = async (id) => {
  * @returns {Promise<QueryResult>}
  */
 const getTradeByEmail = async (email) => {
-  return Trades.findMany({ email });
+  return Trades.find({ email }).exec();
 };
 
 /**

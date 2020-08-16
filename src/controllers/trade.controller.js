@@ -24,6 +24,11 @@ const getTrade = catchAsync(async (req, res) => {
   res.send(trade);
 });
 
+const getTradeByEmail = catchAsync(async (req, res) => {
+  const result = await tradeService.getTradeByEmail(req.params.emailId);
+  res.send(result);
+});
+
 const updateTrade = catchAsync(async (req, res) => {
   const trade = await tradeService.updateTradeById(req.params.tradeId, req.body);
   res.send(trade);
@@ -33,5 +38,6 @@ module.exports = {
   createTrade,
   getTrades,
   getTrade,
+  getTradeByEmail,
   updateTrade,
 };

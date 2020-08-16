@@ -156,10 +156,20 @@ describe('Securities routes', () => {
       expect(res.body.results[0].id).toBe(buyTrade1._id.toHexString());
     });
 
-    test('should return 400 error if email is not specified', async () => {
+    test('should return 400 error if nothing is specified in query to get all trades', async () => {
       await insertManyTrades([buyTrade1, buyTrade2, buyTrade3, sellTrade1, sellTrade2, sellTrade3]);
 
-      await request(app).get('/v1/trade').query({ limit: 2 }).send().expect(httpStatus.BAD_REQUEST);
+      await request(app).get('/v1/trade').query({}).send().expect(httpStatus.BAD_REQUEST);
+    });
+  });
+
+  describe('GET /v1/trade/user/:emailId', () => {
+    test('should return 200 and the trade object if data is ok', async () => {
+      await insertManyTrades([buyTrade1, buyTrade2, buyTrade3, sellTrade1, sellTrade2, sellTrade3]);
+
+      const res = await request(app).get(`/v1/trade/user/${buyTrade1.email}`).send().expect(httpStatus.OK);
+
+      expect(res.body).toHaveLength(6);
     });
   });
 

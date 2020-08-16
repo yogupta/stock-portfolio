@@ -17,13 +17,19 @@ const createTrade = {
 const getTrades = {
   query: Joi.object()
     .keys({
-      email: Joi.string().email().required(),
+      email: Joi.string().email(),
       type: Joi.string().valid(...Object.values(TradeType)),
       sortBy: Joi.string(),
       limit: Joi.number().integer(),
       page: Joi.number().integer(),
     })
     .min(1),
+};
+
+const getTradesOfUser = {
+  params: Joi.object().keys({
+    emailId: Joi.string().email().required(),
+  }),
 };
 
 const getTrade = {
@@ -48,6 +54,7 @@ const updateTrade = {
 module.exports = {
   createTrade,
   getTrades,
+  getTradesOfUser,
   getTrade,
   updateTrade,
 };

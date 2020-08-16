@@ -16,4 +16,6 @@ router
   .get(validate(tradeValidation.getTrade), tradeController.getTrade)
   .patch(validate(tradeValidation.updateTrade), tradeController.updateTrade);
 
+router.route('/user/:emailId').get(validate(tradeValidation.getTradesOfUser), tradeController.getTradeByEmail);
+
 module.exports = router;
