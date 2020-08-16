@@ -9,7 +9,7 @@ const { TradeType } = require('../../src/constants/enums');
 
 setupTestDB();
 
-describe('Securities routes', () => {
+describe('Securities Trades', () => {
   const insertManySecurities = (securities) => Securities.insertMany(securities);
 
   const getFakeTrade = (email, tickerId, type) => ({
@@ -289,6 +289,34 @@ describe('Securities routes', () => {
       const updateBody = {};
 
       await request(app).patch(`/v1/trade/${buyTrade1._id}`).send(updateBody).expect(httpStatus.BAD_REQUEST);
+    });
+  });
+
+  describe('GET /v1/trade/portfolio/user/:emailId', () => {
+    test('should return 200 and the trade object if data is ok', async () => {
+      await insertManySecurities([security, security1, security2]);
+
+      buyTrade1.quantity = 10;
+      buyTrade2.quantity = 2;
+      buyTrade3.ticker = security1._id.toHexString();
+      sellTrade1.quantity = 3;
+      sellTrade2.quantity = 3;
+      sellTrade3.quantity = 3;
+
+      await insertManyTrades([buyTrade1, buyTrade2, buyTrade3, sellTrade1, sellTrade2, sellTrade3]);
+
+      const avgBuyPriceOfSecurity1 = (buyTrade1.price * 10 + buyTrade2.price * 2) / 12;
+      const res = await request(app).get(`/v1/trade/portfolio/user/${buyTrade1.email}`).send().expect(httpStatus.OK);
+
+      expect(res.body).toHaveLength(2);
+
+      const ticker1 = res.body.find((entry) => entry.ticker === security.ticker);
+      const ticker2 = res.body.find((entry) => entry.ticker === security1.ticker);
+
+      expect(ticker1.quantity).toEqual(3);
+      expect(ticker1.averageBuyPrice).toEqual(avgBuyPriceOfSecurity1);
+      expect(ticker2.quantity).toEqual(buyTrade3.quantity);
+      expect(ticker2.averageBuyPrice).toEqual(buyTrade3.price);
     });
   });
 });

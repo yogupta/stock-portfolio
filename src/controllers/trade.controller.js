@@ -34,10 +34,16 @@ const updateTrade = catchAsync(async (req, res) => {
   res.send(trade);
 });
 
+const getPortFolio = catchAsync(async (req, res) => {
+  const result = await tradeService.getPortFolio(req.params.emailId);
+  res.send(result);
+});
+
 module.exports = {
   createTrade,
   getTrades,
   getTrade,
   getTradeByEmail,
   updateTrade,
+  getPortFolio,
 };

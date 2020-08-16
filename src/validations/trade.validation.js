@@ -51,10 +51,17 @@ const updateTrade = {
     .min(1),
 };
 
+const getPortFolio = {
+  params: Joi.object().keys({
+    emailId: Joi.string().email().required(),
+  }),
+};
+
 module.exports = {
   createTrade,
   getTrades,
   getTradesOfUser,
   getTrade,
   updateTrade,
+  getPortFolio,
 };

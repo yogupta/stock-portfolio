@@ -1,6 +1,8 @@
 const httpStatus = require('http-status');
-const { Trades } = require('../models');
+const { Trades, Securities } = require('../models');
 const ApiError = require('../utils/ApiError');
+
+const { TradeType } = require('../constants/enums');
 
 /**
  * Create a trade
@@ -8,6 +10,7 @@ const ApiError = require('../utils/ApiError');
  * @returns {Promise<Trades>}
  */
 const createTrade = async (trade) => {
+  await Securities.findById(trade.ticker);
   const _trade = await Trades.create(trade);
   return _trade;
 };
@@ -65,10 +68,61 @@ const updateTradeById = async (tradeId, updateBody) => {
   return trade;
 };
 
+const getPortFolio = async (email) => {
+  const tradesPromise = Trades.aggregate([
+    { $match: { email } },
+    {
+      $group: {
+        _id: '$ticker',
+
+        trades: { $push: '$$ROOT' },
+      },
+    },
+  ])
+    .exec()
+    .then((trades) => {
+      const allTickers = trades.map((trade) => trade._id);
+
+      const securitiesPromise = Securities.find({ _id: { $in: allTickers } }).exec();
+
+      const result = securitiesPromise.then((securities) => {
+        const tickerById = {};
+        securities.forEach((security) => {
+          tickerById[security._id] = security.ticker;
+        });
+
+        return trades.map((entry) => {
+          const tickerId = entry._id;
+          const ticker = tickerById[tickerId];
+          const buyTrades = entry.trades.filter((trade) => trade.type === TradeType.buy);
+          const sellTrades = entry.trades.filter((trade) => trade.type === TradeType.sell);
+
+          const buyQuantity = buyTrades.map((trade) => trade.quantity).reduce((sum, current) => sum + current, 0);
+          const sellQuantity = sellTrades.map((trade) => trade.quantity).reduce((sum, current) => sum + current, 0);
+          const totalBuyPrice = buyTrades
+            .map((trade) => trade.quantity * trade.price)
+            .reduce((sum, current) => sum + current, 0);
+          const trade = {
+            ticker,
+            quantity: buyQuantity - sellQuantity,
+            averageBuyPrice: totalBuyPrice / buyQuantity,
+          };
+
+          return trade;
+        });
+      });
+
+      return result;
+    });
+
+  return tradesPromise;
+};
+
 module.exports = {
   createTrade,
   queryTrades,
   getTradeById,
   getTradeByEmail,
   updateTradeById,
+  getPortFolio,
 };
