@@ -319,4 +319,30 @@ describe('Securities Trades', () => {
       expect(ticker2.averageBuyPrice).toEqual(buyTrade3.price);
     });
   });
+
+  describe('GET /v1/trade/returns/user/:emailId', () => {
+    test('should return 200 and the trade object if data is ok', async () => {
+      await insertManySecurities([security, security1, security2]);
+
+      buyTrade1.quantity = 10;
+      buyTrade2.quantity = 2;
+      buyTrade3.ticker = security1._id.toHexString();
+      sellTrade1.quantity = 3;
+      sellTrade2.quantity = 3;
+      sellTrade3.quantity = 3;
+
+      await insertManyTrades([buyTrade1, buyTrade2, buyTrade3, sellTrade1, sellTrade2, sellTrade3]);
+
+      const avgBuyPriceOfSecurity1 = (buyTrade1.price * 10 + buyTrade2.price * 2) / 12;
+      const avgBuyPriceOfSecurity2 = buyTrade3.price;
+      const res = await request(app).get(`/v1/trade/returns/user/${buyTrade1.email}`).send().expect(httpStatus.OK);
+
+      const expectedReturns =
+        (security.price - avgBuyPriceOfSecurity1) * 3 + (security1.price - avgBuyPriceOfSecurity2) * buyTrade3.quantity;
+
+      expect(res.body).toEqual({
+        returns: expectedReturns,
+      });
+    });
+  });
 });

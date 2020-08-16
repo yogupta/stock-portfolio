@@ -57,6 +57,12 @@ const getPortFolio = {
   }),
 };
 
+const getReturns = {
+  params: Joi.object().keys({
+    emailId: Joi.string().email().required(),
+  }),
+};
+
 module.exports = {
   createTrade,
   getTrades,
@@ -64,4 +70,5 @@ module.exports = {
   getTrade,
   updateTrade,
   getPortFolio,
+  getReturns,
 };

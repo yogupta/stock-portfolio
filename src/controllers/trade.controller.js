@@ -39,6 +39,11 @@ const getPortFolio = catchAsync(async (req, res) => {
   res.send(result);
 });
 
+const getReturns = catchAsync(async (req, res) => {
+  const result = await tradeService.getReturns(req.params.emailId);
+  res.send(result);
+});
+
 module.exports = {
   createTrade,
   getTrades,
@@ -46,4 +51,5 @@ module.exports = {
   getTradeByEmail,
   updateTrade,
   getPortFolio,
+  getReturns,
 };

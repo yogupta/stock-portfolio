@@ -20,4 +20,6 @@ router.route('/user/:emailId').get(validate(tradeValidation.getTradesOfUser), tr
 
 router.route('/portfolio/user/:emailId').get(validate(tradeValidation.getPortFolio), tradeController.getPortFolio);
 
+router.route('/returns/user/:emailId').get(validate(tradeValidation.getReturns), tradeController.getReturns);
+
 module.exports = router;

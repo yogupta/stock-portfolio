@@ -118,6 +118,40 @@ const getPortFolio = async (email) => {
   return tradesPromise;
 };
 
+const getReturns = async (email) => {
+  const tradesPromise = getPortFolio(email);
+
+  const returns = tradesPromise.then(async (trades) => {
+    const securities = await Trades.aggregate([
+      { $match: { email } },
+      {
+        $group: {
+          _id: '$ticker',
+        },
+      },
+    ])
+      .exec()
+      .then((tickers) => {
+        return tickers.map((ticker) => ticker._id);
+      })
+      .then((tickerIds) => Securities.find({ _id: { $in: tickerIds } }).exec());
+
+    const priceOfSecurityByTicker = {};
+    securities.forEach((security) => {
+      priceOfSecurityByTicker[security.ticker] = security.price;
+    });
+
+    const _returns = trades.reduce((sum, trade) => {
+      const _sum = (priceOfSecurityByTicker[trade.ticker] - trade.averageBuyPrice) * trade.quantity;
+      return sum + _sum;
+    }, 0);
+
+    return { returns: _returns };
+  });
+
+  return returns;
+};
+
 module.exports = {
   createTrade,
   queryTrades,
@@ -125,4 +159,5 @@ module.exports = {
   getTradeByEmail,
   updateTradeById,
   getPortFolio,
+  getReturns,
 };
