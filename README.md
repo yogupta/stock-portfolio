@@ -108,7 +108,7 @@ The default value is `100`.
 - Two mongo documents are created. `Securities` and `Trades`.
   - Trades is simple denormalised table which stores all the trades done by a user.
 - Portfolio is calculated on the fly whenever user queries their portfolio.
-  - checkout [this](https://stackoverflow.com/questions/4373968/database-design-calculating-the-account-balance) and [this](https://stackoverflow.com/a/41400500) stackoverflow links.
+  - checkout [this](https://stackoverflow.com/questions/4373968/database-design-calculating-the-account-balance) and [this](https://stackoverflow.com/a/41400500) stackoverflow links, this inspired me to have a simple table for trades done by a user. A user is represented by a email in the collection.
   - This makes code simplier to write and easy to debug and prevents error which may arise because of multi-threading(if many transactions are performed).
   - Because we're allowing trades to be mutable i.e they can be updated in history, this also makes difficult to store portfolio of a user in database.
 - similarly returns is also calculated on the fly.
