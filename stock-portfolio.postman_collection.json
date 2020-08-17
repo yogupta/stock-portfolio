@@ -1,0 +1,324 @@
+{
+	"info": {
+		"_postman_id": "5f9280a7-016c-4f06-9b5c-0f5b5cc3ed00",
+		"name": "stock-portfolio",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "securities",
+			"item": [
+				{
+					"name": "Get securities",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://stock-portfolio-ap.herokuapp.com/v1/security?limit=1",
+							"protocol": "https",
+							"host": [
+								"stock-portfolio-ap",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"v1",
+								"security"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "1"
+								},
+								{
+									"key": "sortBy",
+									"value": "desc:price",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Get all securities in the db.\nquery params are\n - ticker (get only this ticker)\n - limit (results to limit)\n - page"
+					},
+					"response": []
+				},
+				{
+					"name": "Create a Security",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ticker\": \"TCS\",\n    \"price\": 1880\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://stock-portfolio-ap.herokuapp.com/v1/security",
+							"protocol": "https",
+							"host": [
+								"stock-portfolio-ap",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"v1",
+								"security"
+							]
+						},
+						"description": "price here is optional. the default value is 100.\nthe returns are calculated based on the value of price in the corresponding ticker."
+					},
+					"response": []
+				},
+				{
+					"name": "get security by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://stock-portfolio-ap.herokuapp.com/v1/security/5f37c317f920283d7abfd4c7",
+							"protocol": "https",
+							"host": [
+								"stock-portfolio-ap",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"v1",
+								"security",
+								"5f37c317f920283d7abfd4c7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a security",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"price\": 123\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://stock-portfolio-ap.herokuapp.com/v1/security/5f37c317f920283d7abfd4c7",
+							"protocol": "https",
+							"host": [
+								"stock-portfolio-ap",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"v1",
+								"security",
+								"5f37c317f920283d7abfd4c7"
+							]
+						},
+						"description": "update security. \nonly price is allowed to update.\n"
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "trade",
+			"item": [
+				{
+					"name": "Create a trade",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"email@example.com\",\n    \"type\": \"buy\",\n    \"ticker\": \"tickerId\",\n    \"price\": 123,\n    \"quantity\": 3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://stock-portfolio-ap.herokuapp.com/v1/trade",
+							"protocol": "https",
+							"host": [
+								"stock-portfolio-ap",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"v1",
+								"trade"
+							]
+						},
+						"description": "Create a trade.\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Get all trades in database",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://stock-portfolio-ap.herokuapp.com/v1/trade?limit=10",
+							"protocol": "https",
+							"host": [
+								"stock-portfolio-ap",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"v1",
+								"trade"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						},
+						"description": "get all trades in database.\nquery params:\n- email: trades done by user\n- type: buy or sell\n- limt\n- page"
+					},
+					"response": []
+				},
+				{
+					"name": "Get trade by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://stock-portfolio-ap.herokuapp.com/v1/trade/5f37e2b51ff6a25050711463",
+							"protocol": "https",
+							"host": [
+								"stock-portfolio-ap",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"v1",
+								"trade",
+								"5f37e2b51ff6a25050711463"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update trade by id",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"price\" : 123,\n    \"quantity\": 1,\n    \"type\":\"sell\"\n} ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://stock-portfolio-ap.herokuapp.com/v1/trade/5f37e2b51ff6a25050711463",
+							"protocol": "https",
+							"host": [
+								"stock-portfolio-ap",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"v1",
+								"trade",
+								"5f37e2b51ff6a25050711463"
+							]
+						},
+						"description": "Only \n- price\n- quantity\n- type\nof trade is allowed to be updated"
+					},
+					"response": []
+				},
+				{
+					"name": "Get trades of user by email Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://stock-portfolio-ap.herokuapp.com/v1/trade/user/user@example.com",
+							"protocol": "https",
+							"host": [
+								"stock-portfolio-ap",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"v1",
+								"trade",
+								"user",
+								"user@example.com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET holdings of a user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://stock-portfolio-ap.herokuapp.com/v1/trade/holdings/user/user@example.com",
+							"protocol": "https",
+							"host": [
+								"stock-portfolio-ap",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"v1",
+								"trade",
+								"holdings",
+								"user",
+								"user@example.com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET returns of a user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://stock-portfolio-ap.herokuapp.com/v1/trade/returns/user/user@example.com",
+							"protocol": "https",
+							"host": [
+								"stock-portfolio-ap",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"v1",
+								"trade",
+								"returns",
+								"user",
+								"user@example.com"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
