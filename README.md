@@ -113,6 +113,15 @@ The default value is `100`.
   - Because we're allowing trades to be mutable i.e they can be updated in history, this also makes difficult to store portfolio of a user in database.
 - similarly returns is also calculated on the fly.
 - [Joi](https://www.npmjs.com/package/joi) is used for data validation.
-- A in-memory moongoDB instance is spin on local when running tests.
+- An in-memory moongoDB instance is spin on local when running tests.
 - For prod the database is hosted on mLab.
 - EsLint and prettier is used for linting.
+
+### API
+APIs are documented in swagger at `/v1/docs`.
+key APIs:
+ - `v1/trade/user/:emailId` returns all trade done by user.
+ - `v1/trade/holdings/user/:emailId` returns holdings by user.
+ - `v1/trade/returns/user/:emailId` returns `returns` of a user. 
+    - The default value for current is read from the securities collection.
+    - while creating a security document, `price` is optional and defaults to `100`. 
