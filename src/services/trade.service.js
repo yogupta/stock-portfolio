@@ -68,7 +68,7 @@ const updateTradeById = async (tradeId, updateBody) => {
   return trade;
 };
 
-const getPortFolio = async (email) => {
+const getHoldings = async (email) => {
   const tradesPromise = Trades.aggregate([
     { $match: { email } },
     {
@@ -122,7 +122,7 @@ const getPortFolio = async (email) => {
 };
 
 const getReturns = async (email) => {
-  const tradesPromise = getPortFolio(email);
+  const tradesPromise = getHoldings(email);
 
   const returns = tradesPromise.then(async (trades) => {
     // get all ticker ids done in trade by this user
@@ -162,6 +162,6 @@ module.exports = {
   getTradeById,
   getTradeByEmail,
   updateTradeById,
-  getPortFolio,
+  getHoldings,
   getReturns,
 };

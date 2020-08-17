@@ -10,7 +10,7 @@ const createTrade = catchAsync(async (req, res) => {
 });
 
 const getTrades = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['type', 'ticker']);
+  const filter = pick(req.query, ['type', 'email']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await tradeService.queryTrades(filter, options);
   res.send(result);
@@ -34,8 +34,8 @@ const updateTrade = catchAsync(async (req, res) => {
   res.send(trade);
 });
 
-const getPortFolio = catchAsync(async (req, res) => {
-  const result = await tradeService.getPortFolio(req.params.emailId);
+const getHoldings = catchAsync(async (req, res) => {
+  const result = await tradeService.getHoldings(req.params.emailId);
   res.send(result);
 });
 
@@ -50,6 +50,6 @@ module.exports = {
   getTrade,
   getTradeByEmail,
   updateTrade,
-  getPortFolio,
+  getHoldings,
   getReturns,
 };

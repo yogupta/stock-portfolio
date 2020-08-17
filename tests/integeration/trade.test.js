@@ -292,7 +292,7 @@ describe('Securities Trades', () => {
     });
   });
 
-  describe('GET /v1/trade/portfolio/user/:emailId', () => {
+  describe('GET /v1/trade/holdings/user/:emailId', () => {
     test('should return 200 and the trade object if data is ok', async () => {
       await insertManySecurities([security, security1, security2]);
 
@@ -306,7 +306,7 @@ describe('Securities Trades', () => {
       await insertManyTrades([buyTrade1, buyTrade2, buyTrade3, sellTrade1, sellTrade2, sellTrade3]);
 
       const avgBuyPriceOfSecurity1 = (buyTrade1.price * 10 + buyTrade2.price * 2) / 12;
-      const res = await request(app).get(`/v1/trade/portfolio/user/${buyTrade1.email}`).send().expect(httpStatus.OK);
+      const res = await request(app).get(`/v1/trade/holdings/user/${buyTrade1.email}`).send().expect(httpStatus.OK);
 
       expect(res.body).toHaveLength(2);
 

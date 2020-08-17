@@ -51,7 +51,7 @@ const updateTrade = {
     .min(1),
 };
 
-const getPortFolio = {
+const getHoldings = {
   params: Joi.object().keys({
     emailId: Joi.string().email().required(),
   }),
@@ -69,6 +69,6 @@ module.exports = {
   getTradesOfUser,
   getTrade,
   updateTrade,
-  getPortFolio,
+  getHoldings,
   getReturns,
 };

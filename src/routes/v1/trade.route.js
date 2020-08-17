@@ -18,7 +18,7 @@ router
 
 router.route('/user/:emailId').get(validate(tradeValidation.getTradesOfUser), tradeController.getTradeByEmail);
 
-router.route('/portfolio/user/:emailId').get(validate(tradeValidation.getPortFolio), tradeController.getPortFolio);
+router.route('/holdings/user/:emailId').get(validate(tradeValidation.getHoldings), tradeController.getHoldings);
 
 router.route('/returns/user/:emailId').get(validate(tradeValidation.getReturns), tradeController.getReturns);
 
@@ -264,9 +264,9 @@ module.exports = router;
 /**
  * @swagger
  * path:
- *  /v1/trade/portfolio/user/:emailId:
+ *  /v1/trade/holdings/user/:emailId:
  *    get:
- *      summary: get portfolio of user of emailId
+ *      summary: get holdings of user of emailId
  *      tags: [Trade]
  *      parameters:
  *        - name: emailId
